@@ -3,87 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asodor <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: asodor <asodor@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 19:19:09 by asodor            #+#    #+#             */
-/*   Updated: 2024/08/21 09:37:26 by asodor           ###   ########.fr       */
+/*   Updated: 2024/08/25 16:37:29 by asodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stddef.h>
 
-static int	count_words(char *str, char separator)
+int	is_valid(char *s, int i)
 {
-	int		count;
-	bool	inside_word;
+	if (ft_isdigit(s[i]) || s[i] == 32)
+		return (1);
+	if ((i == 0 || s[i - 1] == 32) && (s[i] == '-' || s[i] == '+')
+		&& ft_isdigit(s[i + 1]))
+		return (1);
+	return (0);
+}
 
-	count = 0;
-	while (*str)
+int	skip_digits(char *s, int i, t_stack_node **a)
+{
+	if ((s[i] == '-' || s[i] == '+'))
+		i++;
+	while (s[i])
 	{
-		inside_word = false;
-		while (*str == separator && *str)
-			++str;
-		while (*str != separator && *str)
-		{
-			if (!inside_word)
-			{
-				++count;
-				inside_word = true;
-			}
-			++str;
-		}
+		if (!is_valid(s, i))
+			ft_error(a);
+		else if (ft_isdigit(s[i]))
+			i++;
+		else
+			break ;
 	}
-	return (count);
+	return (i);
 }
 
-static char	*get_next_word(char *str, char separator)
+void	ft_split(char *s, t_stack_node **a)
 {
-	static int	cursor = 0;
-	char		*next_str;
-	int			len;
-	int			i;
-
-	len = 0;
-	i = 0;
-	while (str[cursor] == separator)
-		++cursor;
-	while ((str[cursor + len] != separator) && str[cursor + len])
-		++len;
-	next_str = malloc((size_t)len * sizeof(char) + 1);
-	if (NULL == next_str)
-		return (NULL);
-	while ((str[cursor] != separator) && str[cursor])
-		next_str[i++] = str[cursor++];
-	next_str[i] = '\0';
-	return (next_str);
-}
-
-char	**ft_split(char *str, char separator)
-{
-	int		words_number;
-	char	**vector_strings;
-	int		i;
+	int	i;
 
 	i = 0;
-	words_number = count_words(str, separator);
-	if (!words_number)
-		exit(1);
-	vector_strings = malloc(sizeof(char *) * (size_t)(words_number + 2));
-	if (NULL == vector_strings)
-		return (NULL);
-	while (words_number-- >= 0)
+	while (s[i])
 	{
-		if (0 == i)
+		if (!is_valid(s, i))
+			ft_error(a);
+		if (s[i] == '-' || s[i] == '+')
 		{
-			vector_strings[i] = malloc(sizeof(char));
-			if (NULL == vector_strings[i])
-				return (NULL);
-			vector_strings[i++][0] = '\0';
-			continue ;
+			//add_at_end(a, new_node(ft_atoi(s + i, a)));
+			append_node(a, ft_atoi(s + i, a));
+			i = skip_digits(s, i, a) - 1;
 		}
-		vector_strings[i++] = get_next_word(str, separator);
+		else if (ft_isdigit(s[i]))
+		{
+			//add_at_end(a, new_node(ft_atoi(s + i, a)));
+			append_node(a, ft_atoi(s + i, a));
+			i = skip_digits(s, i, a) - 1;
+		}
+		i++;
 	}
-	vector_strings[i] = NULL;
-	return (vector_strings);
 }
+

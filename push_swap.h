@@ -32,17 +32,17 @@ typedef struct s_stack_node
 }				t_stack_node;	
 
 //*** Handle input
-char			**ft_split(char *str, char separator);
+int						ft_atoi(char *s, t_stack_node **a);
+int						ft_isdigit(char c);
+int						ft_isspace(char c);
+void						ft_split(char *s, t_stack_node **a);
 
 //*** Handle errors-free ***
-void			free_matrix(char **argv);
-void			error_free(t_stack_node **a, char **argv, bool flag_argc_2);
-void			free_stack(t_stack_node **stack);
-int				error_repetition(t_stack_node *a, int nbr);
-int				error_syntax(char *str_nbr);
+void			ft_error(t_stack_node **a);
+void			ft_clear_lst(t_stack_node **lst);
 
 //*** Stack creation ***
-void			stack_init(t_stack_node **a, char **argv, bool flag_argc_2);
+void			stack_init(int ac, char **av, t_stack_node **a);
 void			init_nodes(t_stack_node *a, t_stack_node *b);
 void			set_current_position(t_stack_node *stack);
 void			set_price(t_stack_node *a, t_stack_node *b);

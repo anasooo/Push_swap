@@ -3,27 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asodor <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: asodor <asodor@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 19:16:51 by asodor            #+#    #+#             */
-/*   Updated: 2024/08/21 09:33:32 by asodor           ###   ########.fr       */
+/*   Updated: 2024/08/24 17:08:26 by asodor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	main(int argc, char **argv)
+int	main(int ac, char **av)
 {
 	t_stack_node	*a;
 	t_stack_node	*b;
 
 	a = NULL;
 	b = NULL;
-	if (1 == argc || (2 == argc && !argv[1][0]))
-		return (1);
-	else if (2 == argc)
-		argv = ft_split(argv[1], ' ');
-	stack_init(&a, argv + 1, 2 == argc);
+	stack_init(ac, av, &a);
 	if (!stack_sorted(a))
 	{
 		if (stack_len(a) == 2)
@@ -33,5 +29,6 @@ int	main(int argc, char **argv)
 		else
 			push_swap(&a, &b);
 	}
-	free_stack(&a);
+	ft_clear_lst(&a);
+	ft_clear_lst(&b);
 }

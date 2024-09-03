@@ -3,39 +3,33 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asodor <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: asodor <asodor@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 10:33:52 by asodor            #+#    #+#              #
-#    Updated: 2024/08/21 10:34:01 by asodor           ###   ########.fr        #
+#    Updated: 2024/08/24 12:49:51 by asodor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
-ARCHIVE = push_swap.a
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra 
-MAKE_LIB = ar -rcs
-
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
-all : $(NAME)
+all: $(NAME)
 
-$(NAME) : $(ARCHIVE)
-	$(CC) $< -o $@
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(ARCHIVE) : $(OBJS)
-	$(MAKE_LIB) $(ARCHIVE) $^
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o : %.c 
-	$(CC) $(CFLAGS) -c $< -o $@ 
-	
-clean :
-	rm -f $(OBJS) $(ARCHIVE)
+clean:
+	rm -f $(OBJS)
 
-fclean : clean
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
 
-.PHONY : all clean fclea re
+.PHONY: all clean fclean re
